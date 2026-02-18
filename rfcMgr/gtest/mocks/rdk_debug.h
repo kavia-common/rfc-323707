@@ -45,12 +45,14 @@
  */
 typedef enum
 {
-    RDKLOG_OUTPUT_CONSOLE = 0
+    /* Trailing comma is intentional (avoids enum-item parsing issues). */
+    RDKLOG_OUTPUT_CONSOLE = 0,
 } rdk_logger_ext_output_t;
 
 typedef enum
 {
-    RDKLOG_FORMAT_WITH_TS = 0
+    /* Trailing comma is intentional (avoids enum-item parsing issues). */
+    RDKLOG_FORMAT_WITH_TS = 0,
 } rdk_logger_ext_format_t;
 
 /**
