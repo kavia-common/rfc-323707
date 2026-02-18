@@ -31,7 +31,47 @@
 #define RDK_LOG_WARN 4
 #define RDK_LOG_ERROR 5
 
+/**
+ * Minimal RDK common return codes expected by production code paths.
+ * We define only what's required for unit-test compilation/linking.
+ */
+#define RDK_SUCCESS 0
+
+/**
+ * Minimal set of extended logger enums used by rfcMgr/rfc_manager.cpp.
+ * Values are not important for unit tests; they just need to compile.
+ */
+typedef enum {
+    RDKLOG_OUTPUT_CONSOLE = 0
+} rdk_logger_ext_output_t;
+
+typedef enum {
+    RDKLOG_FORMAT_WITH_TS = 0
+} rdk_logger_ext_format_t;
+
+/**
+ * Configuration struct used by rdk_logger_ext_init() in rfc_manager.cpp.
+ */
+typedef struct {
+    const char* pModuleName;
+    int loglevel;
+    rdk_logger_ext_output_t output;
+    rdk_logger_ext_format_t format;
+    void* pFilePolicy;
+} rdk_logger_ext_config_t;
+
 #define rdk_logger_init(DEBUG_INI_NAME) ;
+
+/**
+ * Initialize the extended logger.
+ * In unit tests we stub this out to always succeed.
+ */
+// PUBLIC_INTERFACE
+static inline int rdk_logger_ext_init(const rdk_logger_ext_config_t* /*config*/)
+{
+    /** Stubbed gtest implementation of rdk_logger_ext_init(). */
+    return RDK_SUCCESS;
+}
 
 // The macro to convert RDK_LOG to printf
 #define RDK_LOG(level, module, ...) \
