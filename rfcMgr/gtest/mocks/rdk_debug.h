@@ -21,7 +21,6 @@
 #ifndef RDK_DEBUG_H_
 #define RDK_DEBUG_H_
 
-
 #include <stdio.h>
 
 #define LOG_RFCMGR "LOG.RDK.RFCMGR"
@@ -40,19 +39,27 @@
 /**
  * Minimal set of extended logger enums used by rfcMgr/rfc_manager.cpp.
  * Values are not important for unit tests; they just need to compile.
+ *
+ * NOTE: The build error referenced an earlier broken version where enum
+ * entries incorrectly ended with ';' instead of ',' (or nothing).
  */
-typedef enum {
+typedef enum
+{
     RDKLOG_OUTPUT_CONSOLE = 0
 } rdk_logger_ext_output_t;
 
-typedef enum {
+typedef enum
+{
     RDKLOG_FORMAT_WITH_TS = 0
 } rdk_logger_ext_format_t;
 
 /**
  * Configuration struct used by rdk_logger_ext_init() in rfc_manager.cpp.
+ * This must match the field names used in designated initializers:
+ *   .pModuleName, .loglevel, .output, .format, .pFilePolicy
  */
-typedef struct {
+typedef struct
+{
     const char* pModuleName;
     int loglevel;
     rdk_logger_ext_output_t output;
@@ -73,21 +80,17 @@ static inline int rdk_logger_ext_init(const rdk_logger_ext_config_t* /*config*/)
     return RDK_SUCCESS;
 }
 
-// The macro to convert RDK_LOG to printf
-#define RDK_LOG(level, module, ...) \
-    do { \
-        if (( level == RDK_LOG_DEBUG )) { \
-            printf("DEBUG: %s: ", module); \
-        } \
-        else if (( level == RDK_LOG_INFO )) { \
-            printf("INFO: %s: ", module); \
-        } \
-        else if (( level == RDK_LOG_ERROR )) { \
-            printf("ERROR: %s: ", module); \
-        } \
-        printf(__VA_ARGS__); \
+/* The macro to convert RDK_LOG to printf */
+#define RDK_LOG(level, module, ...)          \
+    do {                                     \
+        if ((level == RDK_LOG_DEBUG)) {      \
+            printf("DEBUG: %s: ", module);   \
+        } else if ((level == RDK_LOG_INFO)) {\
+            printf("INFO: %s: ", module);    \
+        } else if ((level == RDK_LOG_ERROR)) {\
+            printf("ERROR: %s: ", module);   \
+        }                                    \
+        printf(__VA_ARGS__);                 \
     } while (0)
 
-
 #endif
-
